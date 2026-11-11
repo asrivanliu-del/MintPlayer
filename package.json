@@ -1,0 +1,82 @@
+{
+  "name": "mintplayer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MP3 player with backing track and lyrics support",
+  "author": "Ivan Liu",
+  "main": "dist/electron/main.js",
+  "scripts": {
+    "tsc:main": "tsc -p tsconfig.main.json",
+    "tsc:main:watch": "tsc -p tsconfig.main.json --watch",
+    "electron:dev": "wait-on dist/electron/main.js && nodemon --watch src/electron --ext ts --delay 2000ms --exec \"node scripts/run-electron.js\"",
+    "dev": "npm run tsc:main && cross-env NODE_ENV=development concurrently -k \"npm:tsc:main:watch\" \"vite --host 127.0.0.1\" \"npm:electron:dev\"",
+    "start": "electron .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:browser": "playwright test",
+    "build": "vite build && tsc -p tsconfig.main.json && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder"
+  },
+  "build": {
+    "appId": "com.ivan.mintplayer",
+    "productName": "MintPlayer",
+    "asarUnpack": [
+      "node_modules/@naria2/**/*"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build-icons"
+    },
+    "extraResources": [
+      {
+        "from": "scripts/karaoke_aligner.py",
+        "to": "scripts/karaoke_aligner.py"
+      }
+    ],
+    "files": [
+      "dist/electron/**/*",
+      "dist/renderer/**/*",
+      "build-icons/**/*",
+      "logo.jpg",
+      "index.html",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "build-icons/app.ico",
+      "signAndEditExecutable": false
+    }
+  },
+  "dependencies": {
+    "@naria2/node": "^0.1.2",
+    "music-metadata": "^12.3.2",
+    "node-id3": "^0.2.0",
+    "opencc-js": "^1.4.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "soundtouchjs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^24",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "concurrently": "^10.0.6",
+    "cross-env": "^10.1.0",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0",
+    "jsdom": "^29.1.1",
+    "nodemon": "^3.1.14",
+    "typescript": "^5.0.0",
+    "vite": "^7.3.7",
+    "vitest": "^5.0.5",
+    "wait-on": "^7.0.0"
+  },
+  "overrides": {
+    "uuid": "^14.0.3"
+  }
+}

@@ -1,0 +1,8 @@
+/node_modules/
+/.venv/
+/dist/
+/dist-get-info/
+/dist-win7/
+/temp_demucs_out/
+/playwright-report/
+/test-results/
